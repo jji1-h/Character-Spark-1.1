@@ -1,41 +1,39 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Character Spark | Creative Engine</title>
-    <link rel="stylesheet" href="/src/index.css">
-  </head>
-  <body>
-    <div id="app">
-      <ambient-background></ambient-background>
-      
-      <header>
-        <h1>Character<br>Spark</h1>
-        <p>Creative Inspiration Engine / v1.0</p>
-      </header>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Spark - 캐릭터 생성 매트릭스</title>
+  <link rel="stylesheet" href="/src/index.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>CHARACTER SPARK</h1>
+      <p>캐릭터 생성 매트릭스</p>
+    </header>
 
-      <main>
-        <aside class="sidebar">
-          <div class="section-title">01 / Configuration</div>
-          <genre-switcher></genre-switcher>
-        </aside>
+    <main>
+      <section class="generator-section">
+        <div class="section-label">GENRE SELECTION</div>
+        <genre-switcher></genre-switcher>
 
-        <div class="content-area">
-          <div class="section-title">02 / Generation</div>
-          <character-cards></character-cards>
-        </div>
-      </main>
-
-      <section class="storage-area">
-        <div class="section-title">03 / Archive</div>
-        <my-spark-shelf></my-spark-shelf>
+        <div class="section-label">CHARACTER MATRIX</div>
+        <character-cards></character-cards>
       </section>
 
-      <footer>
-        <p>&copy; 2024 Character Spark. Built for the web.</p>
-      </footer>
-    </div>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+      <section class="storage-section">
+        <div class="section-label">SPARK ARCHIVE</div>
+        <spark-shelf></spark-shelf>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2026 CHARACTER SPARK. ALL RIGHTS RESERVED.
+    </footer>
+  </div>
+
+  <ambient-background></ambient-background>
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>

@@ -28,78 +28,72 @@ class GenreSwitcher extends HTMLElement {
       <style>
         :host {
           display: block;
-          font-family: "Inter", sans-serif;
+          font-family: 'Pretendard Variable', sans-serif;
         }
         .container {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
-        }
-        .header {
-          display: flex;
-          justify-content: space-between;
           align-items: center;
-          margin-bottom: 1rem;
-        }
-        .label {
-          font-family: "JetBrains Mono", monospace;
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          letter-spacing: 0.2em;
-          color: #00FF00;
+          gap: 1.5rem;
         }
         .all-toggle {
           cursor: pointer;
-          font-family: "JetBrains Mono", monospace;
-          font-size: 0.6rem;
+          font-size: 0.8rem;
           text-transform: uppercase;
-          color: #FFFFFF;
-          opacity: 0.5;
+          color: #FFD700;
+          opacity: 0.6;
           transition: opacity 0.2s;
+          letter-spacing: 0.2em;
+          border: 1px solid rgba(255, 215, 0, 0.3);
+          padding: 0.5rem 1rem;
+          border-radius: 2rem;
         }
         .all-toggle:hover {
           opacity: 1;
+          background: rgba(255, 215, 0, 0.1);
         }
         .options {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 0.5rem;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+          width: 100%;
         }
         .option {
           display: flex;
           align-items: center;
-          gap: 1rem;
-          padding: 1rem;
+          gap: 0.8rem;
+          padding: 0.8rem 1.5rem;
           border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 0.5rem;
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.3s;
           user-select: none;
+          background: rgba(255, 255, 255, 0.05);
+          color: #FFFFFF;
         }
         .option:hover {
-          background: rgba(0, 255, 0, 0.05);
-          border-color: #00FF00;
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.3);
         }
         .option.active {
-          background: #00FF00;
+          background: #FFD700;
           color: #000000;
-          border-color: #00FF00;
+          border-color: #FFD700;
+          box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
         .option input {
           display: none;
         }
         .option-label {
-          font-size: 0.9rem;
-          font-weight: 600;
-          text-transform: uppercase;
+          font-size: 1rem;
+          font-weight: 700;
           letter-spacing: 0.05em;
         }
       </style>
       <div class="container">
-        <div class="header">
-          <div class="label">Genre Matrix</div>
-          <div class="all-toggle" id="all-select">
-            ${allChecked ? '[ Deselect All ]' : '[ Select All ]'}
-          </div>
+        <div class="all-toggle" id="all-select">
+          ${allChecked ? 'DESELECT ALL' : 'SELECT ALL GENRES'}
         </div>
         <div class="options">
           ${genres.map(([key, pack]) => {
