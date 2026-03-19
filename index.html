@@ -6,8 +6,33 @@
     <title>My Google AI Studio App</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="app">
+      <ambient-background></ambient-background>
+      <header>
+        <h1>Character Spark</h1>
+        <p>창작자를 위한 캐릭터 영감 엔진</p>
+      </header>
+
+      <main>
+        <section className="generator-area">
+          <div className="controls">
+            <genre-switcher></genre-switcher>
+          </div>
+          
+          <character-cards></character-cards>
+        </section>
+
+        <section className="storage-area">
+          <h2>My Sparks (보관함)</h2>
+          <my-spark-shelf></my-spark-shelf>
+        </section>
+      </main>
+
+      <footer>
+        <p>&copy; 2024 Character Spark. Create something amazing.</p>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
 
