@@ -1,4 +1,4 @@
-import { KEYWORD_PACKS, dataService } from '../services/characterData';
+import { KEYWORD_PACKS, dataService } from '../services/characterData.js';
 
 class GenreSwitcher extends HTMLElement {
   constructor() {

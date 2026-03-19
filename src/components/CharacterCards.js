@@ -1,4 +1,4 @@
-import { dataService } from '../services/characterData';
+import { dataService } from '../services/characterData.js';
 import { GoogleGenAI } from "@google/genai";
 
 class CharacterCards extends HTMLElement {

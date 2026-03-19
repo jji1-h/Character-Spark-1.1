@@ -1,4 +1,4 @@
-import { dataService } from '../services/characterData';
+import { dataService } from '../services/characterData.js';
 
 class SparkShelf extends HTMLElement {
   constructor() {

@@ -1,6 +1,6 @@
-import './components/GenreSwitcher';
-import './components/CharacterCards';
-import './components/SparkShelf';
-import './components/AmbientBackground';
+import './components/GenreSwitcher.js';
+import './components/CharacterCards.js';
+import './components/SparkShelf.js';
+import './components/AmbientBackground.js';
 
 console.log('Character Spark Initialized');
