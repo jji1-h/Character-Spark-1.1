@@ -1,4 +1,3 @@
-import './index.css';
 import './components/GenreSwitcher';
 import './components/CharacterCards';
 import './components/SparkShelf';

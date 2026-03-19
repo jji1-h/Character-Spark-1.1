@@ -13,6 +13,7 @@ class AmbientBackground extends HTMLElement {
   }
 
   connectedCallback() {
+    this.render();
     this.initThree();
     window.addEventListener('resize', this.onResize.bind(this));
     window.addEventListener('spark-complete', this.onSparkComplete.bind(this) as EventListener);

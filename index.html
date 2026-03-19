@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <title>Character Spark</title>
+    <link rel="stylesheet" href="/src/index.css">
   </head>
   <body>
     <div id="app">
@@ -14,15 +15,15 @@
       </header>
 
       <main>
-        <section className="generator-area">
-          <div className="controls">
+        <section class="generator-area">
+          <div class="controls">
             <genre-switcher></genre-switcher>
           </div>
           
           <character-cards></character-cards>
         </section>
 
-        <section className="storage-area">
+        <section class="storage-area">
           <h2>My Sparks (보관함)</h2>
           <my-spark-shelf></my-spark-shelf>
         </section>
