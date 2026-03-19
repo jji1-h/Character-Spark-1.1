@@ -33,29 +33,15 @@ export const KEYWORD_PACKS = {
   }
 };
 
-export interface Spark {
-  id: number;
-  genres: string[];
-  job: string;
-  personality: string;
-  appearance: string;
-  twist: string;
-  timestamp: string;
-  colors: { oklch: string; hex: string }[];
-}
-
 class CharacterDataService {
-  selectedGenres: Set<string>;
-  savedSparks: Spark[];
-
   constructor() {
     // Default to ALL selected
     this.selectedGenres = new Set(Object.keys(KEYWORD_PACKS));
     this.savedSparks = JSON.parse(localStorage.getItem('mySparks') || '[]');
   }
 
-  toggleGenre(genre: string) {
-    if (!KEYWORD_PACKS[genre as keyof typeof KEYWORD_PACKS]) return;
+  toggleGenre(genre) {
+    if (!KEYWORD_PACKS[genre]) return;
     
     if (this.selectedGenres.has(genre)) {
       this.selectedGenres.delete(genre);
@@ -64,17 +50,17 @@ class CharacterDataService {
     }
   }
 
-  getRandomKeyword(category: 'job' | 'personality' | 'appearance' | 'twist'): string {
+  getRandomKeyword(category) {
     if (this.selectedGenres.size === 0) return '?';
     
-    let pool: string[] = [];
+    let pool = [];
     this.selectedGenres.forEach(genre => {
-      pool = pool.concat(KEYWORD_PACKS[genre as keyof typeof KEYWORD_PACKS][category]);
+      pool = pool.concat(KEYWORD_PACKS[genre][category]);
     });
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
-  generateCombination(): Spark {
+  generateCombination() {
     return {
       id: Date.now(),
       genres: Array.from(this.selectedGenres),
@@ -96,10 +82,10 @@ class CharacterDataService {
     ];
   }
 
-  hslToHex(h: number, s: number, l: number) {
+  hslToHex(h, s, l) {
     l /= 100;
     const a = s * Math.min(l, 1 - l) / 100;
-    const f = (n: number) => {
+    const f = (n) => {
       const k = (n + h / 30) % 12;
       const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
       return Math.round(255 * color).toString(16).padStart(2, '0');
@@ -107,17 +93,17 @@ class CharacterDataService {
     return `#${f(0)}${f(8)}${f(4)}`;
   }
 
-  saveSpark(spark: Spark) {
+  saveSpark(spark) {
     this.savedSparks.unshift(spark);
     localStorage.setItem('mySparks', JSON.stringify(this.savedSparks));
   }
 
-  deleteSpark(id: number) {
+  deleteSpark(id) {
     this.savedSparks = this.savedSparks.filter(s => s.id !== id);
     localStorage.setItem('mySparks', JSON.stringify(this.savedSparks));
   }
 
-  getSavedSparks(): Spark[] {
+  getSavedSparks() {
     return this.savedSparks;
   }
 }

@@ -11,7 +11,7 @@ class SparkShelf extends HTMLElement {
     window.addEventListener('spark-saved', () => this.render());
   }
 
-  deleteSpark(id: number) {
+  deleteSpark(id) {
     dataService.deleteSpark(id);
     this.render();
   }
@@ -19,7 +19,7 @@ class SparkShelf extends HTMLElement {
   render() {
     const sparks = dataService.getSavedSparks();
     
-    this.shadowRoot!.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style>
         .shelf {
           display: grid;
@@ -126,8 +126,8 @@ class SparkShelf extends HTMLElement {
       </div>
     `;
 
-    this.shadowRoot!.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', (e: any) => {
+    this.shadowRoot.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
         this.deleteSpark(Number(e.target.dataset.id));
       });
     });

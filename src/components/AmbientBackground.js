@@ -1,28 +1,27 @@
 import * as THREE from 'three';
 
 class AmbientBackground extends HTMLElement {
-  scene: THREE.Scene | null = null;
-  camera: THREE.PerspectiveCamera | null = null;
-  renderer: THREE.WebGLRenderer | null = null;
-  particles: THREE.Points | null = null;
-  animationId: number | null = null;
-
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+    this.particles = null;
+    this.animationId = null;
   }
 
   connectedCallback() {
     this.render();
     this.initThree();
     window.addEventListener('resize', this.onResize.bind(this));
-    window.addEventListener('spark-complete', this.onSparkComplete.bind(this) as EventListener);
+    window.addEventListener('spark-complete', this.onSparkComplete.bind(this));
   }
 
   disconnectedCallback() {
     if (this.animationId) cancelAnimationFrame(this.animationId);
     window.removeEventListener('resize', this.onResize.bind(this));
-    window.removeEventListener('spark-complete', this.onSparkComplete.bind(this) as EventListener);
+    window.removeEventListener('spark-complete', this.onSparkComplete.bind(this));
   }
 
   initThree() {
@@ -30,7 +29,7 @@ class AmbientBackground extends HTMLElement {
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.shadowRoot!.appendChild(this.renderer.domElement);
+    this.shadowRoot.appendChild(this.renderer.domElement);
 
     const geometry = new THREE.BufferGeometry();
     const vertices = [];
@@ -58,12 +57,12 @@ class AmbientBackground extends HTMLElement {
     }
   }
 
-  onSparkComplete(event: CustomEvent) {
+  onSparkComplete(event) {
     if (!this.particles) return;
     const colors = event.detail.colors;
     if (colors && colors.length > 0) {
       const color = new THREE.Color(colors[0].hex);
-      (this.particles.material as THREE.PointsMaterial).color = color;
+      this.particles.material.color = color;
       
       // Pulse effect
       const originalSize = 2;
@@ -71,14 +70,14 @@ class AmbientBackground extends HTMLElement {
       const pulse = () => {
         scale += 0.1;
         if (this.particles) {
-          (this.particles.material as THREE.PointsMaterial).size = originalSize * scale;
+          this.particles.material.size = originalSize * scale;
         }
         if (scale < 3) requestAnimationFrame(pulse);
         else {
           const shrink = () => {
              scale -= 0.1;
              if (this.particles) {
-               (this.particles.material as THREE.PointsMaterial).size = originalSize * scale;
+               this.particles.material.size = originalSize * scale;
              }
              if (scale > 1) requestAnimationFrame(shrink);
           };
@@ -101,7 +100,7 @@ class AmbientBackground extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot!.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style>
         :host {
           position: fixed;

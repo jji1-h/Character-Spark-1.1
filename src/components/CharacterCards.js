@@ -1,13 +1,7 @@
-import { dataService, Spark } from '../services/characterData';
+import { dataService } from '../services/characterData';
 import { GoogleGenAI } from "@google/genai";
 
 class CharacterCards extends HTMLElement {
-  sparkData: { job: string; personality: string; appearance: string; twist: string };
-  flippedStates: { job: boolean; personality: boolean; appearance: boolean; twist: boolean };
-  redrawCounts: { job: number; personality: number; appearance: number; twist: number };
-  currentSpark: Spark | null;
-  isGeneratingAI: boolean = false;
-
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -21,31 +15,32 @@ class CharacterCards extends HTMLElement {
       job: 0, personality: 0, appearance: 0, twist: 0
     };
     this.currentSpark = null;
+    this.isGeneratingAI = false;
   }
 
   connectedCallback() {
     this.render();
   }
 
-  showModal(message: string) {
-    const modal = this.shadowRoot!.getElementById('alert-modal')!;
-    const modalMsg = this.shadowRoot!.getElementById('modal-message')!;
+  showModal(message) {
+    const modal = this.shadowRoot.getElementById('alert-modal');
+    const modalMsg = this.shadowRoot.getElementById('modal-message');
     modalMsg.textContent = message;
     modal.classList.add('show');
   }
 
   closeModal() {
-    this.shadowRoot!.getElementById('alert-modal')!.classList.remove('show');
+    this.shadowRoot.getElementById('alert-modal').classList.remove('show');
   }
 
-  async flipCard(category: 'job' | 'personality' | 'appearance' | 'twist') {
+  async flipCard(category) {
     if (dataService.selectedGenres.size === 0) {
       this.showModal("하나 이상의 장르를 선택해 주세요.");
       return;
     }
 
-    const card = this.shadowRoot!.querySelector(`.card[data-cat="${category}"]`) as HTMLElement;
-    const back = card.querySelector('.back') as HTMLElement;
+    const card = this.shadowRoot.querySelector(`.card[data-cat="${category}"]`);
+    const back = card.querySelector('.back');
 
     if (this.flippedStates[category]) {
       if (this.redrawCounts[category] >= 3) {
@@ -67,7 +62,7 @@ class CharacterCards extends HTMLElement {
     this.checkCompletion();
   }
 
-  updateCardBack(category: 'job' | 'personality' | 'appearance' | 'twist', backElement: HTMLElement) {
+  updateCardBack(category, backElement) {
     const count = this.redrawCounts[category];
     const labelMap = {
       job: '직업',
@@ -87,7 +82,7 @@ class CharacterCards extends HTMLElement {
   }
 
   async resetAll() {
-    const cards = this.shadowRoot!.querySelectorAll('.card');
+    const cards = this.shadowRoot.querySelectorAll('.card');
     cards.forEach(card => card.classList.remove('is-flipped'));
 
     await new Promise(r => setTimeout(r, 600));
@@ -97,8 +92,8 @@ class CharacterCards extends HTMLElement {
     this.redrawCounts = { job: 0, personality: 0, appearance: 0, twist: 0 };
     this.currentSpark = null;
 
-    (this.shadowRoot!.querySelector('.save-btn') as HTMLButtonElement).disabled = true;
-    (this.shadowRoot!.querySelector('.ai-btn') as HTMLButtonElement).disabled = true;
+    this.shadowRoot.querySelector('.save-btn').disabled = true;
+    this.shadowRoot.querySelector('.ai-btn').disabled = true;
     this.render();
   }
 
@@ -112,8 +107,8 @@ class CharacterCards extends HTMLElement {
         timestamp: new Date().toISOString(),
         colors: dataService.generatePalette()
       };
-      (this.shadowRoot!.querySelector('.save-btn') as HTMLButtonElement).disabled = false;
-      (this.shadowRoot!.querySelector('.ai-btn') as HTMLButtonElement).disabled = false;
+      this.shadowRoot.querySelector('.save-btn').disabled = false;
+      this.shadowRoot.querySelector('.ai-btn').disabled = false;
       window.dispatchEvent(new CustomEvent('spark-complete', { detail: this.currentSpark }));
     }
   }
@@ -130,7 +125,7 @@ class CharacterCards extends HTMLElement {
     if (!this.currentSpark || this.isGeneratingAI) return;
 
     this.isGeneratingAI = true;
-    const aiBtn = this.shadowRoot!.querySelector('.ai-btn') as HTMLButtonElement;
+    const aiBtn = this.shadowRoot.querySelector('.ai-btn');
     aiBtn.textContent = "AI 분석 중...";
     aiBtn.disabled = true;
 
@@ -170,14 +165,14 @@ class CharacterCards extends HTMLElement {
   }
 
   render() {
-    const categories: { id: 'job' | 'personality' | 'appearance' | 'twist'; label: string; icon: string }[] = [
+    const categories = [
       { id: 'job', label: '직업', icon: '✦' },
       { id: 'personality', label: '성격', icon: '✧' },
       { id: 'appearance', label: '외모특성', icon: '❂' },
       { id: 'twist', label: '반전매력', icon: '✵' }
     ];
 
-    this.shadowRoot!.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style>
         :host { 
           display: block; 
@@ -464,25 +459,25 @@ class CharacterCards extends HTMLElement {
       </div>
     `;
 
-    this.shadowRoot!.querySelectorAll('.card-scene').forEach(scene => {
+    this.shadowRoot.querySelectorAll('.card-scene').forEach(scene => {
       scene.addEventListener('click', () => {
-        this.flipCard((scene as HTMLElement).dataset.id as any);
+        this.flipCard(scene.dataset.id);
       });
     });
 
-    this.shadowRoot!.querySelector('.redraw-btn')!.addEventListener('click', () => {
+    this.shadowRoot.querySelector('.redraw-btn').addEventListener('click', () => {
       this.resetAll();
     });
 
-    this.shadowRoot!.querySelector('.save-btn')!.addEventListener('click', () => {
+    this.shadowRoot.querySelector('.save-btn').addEventListener('click', () => {
       this.saveCurrent();
     });
 
-    this.shadowRoot!.querySelector('.ai-btn')!.addEventListener('click', () => {
+    this.shadowRoot.querySelector('.ai-btn').addEventListener('click', () => {
       this.generateAIBackstory();
     });
 
-    this.shadowRoot!.querySelector('.modal-close')!.addEventListener('click', () => {
+    this.shadowRoot.querySelector('.modal-close').addEventListener('click', () => {
       this.closeModal();
     });
   }

@@ -10,7 +10,7 @@ class GenreSwitcher extends HTMLElement {
     this.render();
   }
 
-  toggleAll(checked: boolean) {
+  toggleAll(checked) {
     if (checked) {
       Object.keys(KEYWORD_PACKS).forEach(g => dataService.selectedGenres.add(g));
     } else {
@@ -24,7 +24,7 @@ class GenreSwitcher extends HTMLElement {
     const genres = Object.entries(KEYWORD_PACKS);
     const allChecked = dataService.selectedGenres.size === genres.length;
 
-    this.shadowRoot!.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style>
         :host {
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
@@ -123,12 +123,12 @@ class GenreSwitcher extends HTMLElement {
       </div>
     `;
 
-    this.shadowRoot!.getElementById('all-select')!.addEventListener('change', (e: any) => {
+    this.shadowRoot.getElementById('all-select').addEventListener('change', (e) => {
       this.toggleAll(e.target.checked);
     });
 
-    this.shadowRoot!.querySelectorAll('.genre-checkbox').forEach(input => {
-      input.addEventListener('change', (e: any) => {
+    this.shadowRoot.querySelectorAll('.genre-checkbox').forEach(input => {
+      input.addEventListener('change', (e) => {
         const genre = e.target.value;
         dataService.toggleGenre(genre);
         this.render(); 
