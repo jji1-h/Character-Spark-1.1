@@ -1,39 +1,71 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Character Spark - 캐릭터 생성 매트릭스</title>
-  <link rel="stylesheet" href="/src/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Spark - 당신의 캐릭터를 깨우는 마법</title>
+    <link rel="stylesheet" href="/src/style.css">
 </head>
-<body>
-  <div id="app">
-    <header>
-      <h1>CHARACTER SPARK</h1>
-      <p>캐릭터 생성 매트릭스</p>
-    </header>
+<body class="bg-[#2D1B4E] text-white overflow-x-hidden">
+    <!-- 별무리 배경 -->
+    <div id="starfield" class="fixed inset-0 pointer-events-none z-0"></div>
+    
+    <div id="app" class="relative z-10 min-h-screen flex flex-col items-center py-12 px-4">
+        <!-- 헤더 -->
+        <header class="text-center mb-12 animate-fade-in">
+            <h1 class="text-5xl md:text-6xl font-serif font-bold text-[#FFD700] drop-shadow-[0_0_15px_rgba(255,215,0,0.5)] mb-4 tracking-widest">
+                CHARACTER SPARK
+            </h1>
+            <p class="text-[#FFB7C5] text-lg md:text-xl font-light tracking-widest opacity-80">
+                운명의 카드가 당신의 이야기를 완성합니다
+            </p>
+        </header>
 
-    <main>
-      <section class="generator-section">
-        <div class="section-label">GENRE SELECTION</div>
-        <genre-switcher></genre-switcher>
+        <!-- 장르 선택 -->
+        <section class="w-full max-w-4xl mb-12">
+            <div class="flex flex-wrap justify-center gap-4" id="genre-selector">
+                <!-- 장르 버튼들이 여기에 생성됩니다 -->
+            </div>
+        </section>
 
-        <div class="section-label">CHARACTER MATRIX</div>
-        <character-cards></character-cards>
-      </section>
+        <!-- 카드 매트릭스 -->
+        <section class="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16" id="card-container">
+            <!-- 4장의 카드가 여기에 생성됩니다 -->
+        </section>
 
-      <section class="storage-section">
-        <div class="section-label">SPARK ARCHIVE</div>
-        <spark-shelf></spark-shelf>
-      </section>
-    </main>
+        <!-- 컨트롤 버튼 -->
+        <div class="flex flex-col items-center gap-6 mb-16">
+            <button id="magic-circle-btn" class="group relative w-32 h-32 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
+                <div class="absolute inset-0 border-4 border-[#FFD700] rounded-full animate-spin-slow opacity-50"></div>
+                <div class="absolute inset-2 border-2 border-[#FFB7C5] rounded-full animate-reverse-spin opacity-30"></div>
+                <div class="w-20 h-20 bg-[#FFD700] rounded-full flex items-center justify-center text-[#2D1B4E] font-bold text-xl shadow-[0_0_30px_rgba(255,215,0,0.8)] z-10">
+                    SPARK!
+                </div>
+            </button>
+            <div class="text-[#FFD700] text-sm opacity-60" id="reset-limit-info">
+                오늘의 전체 리셋 남은 횟수: 10/10
+            </div>
+        </div>
 
-    <footer>
-      &copy; 2026 CHARACTER SPARK. ALL RIGHTS RESERVED.
-    </footer>
-  </div>
+        <!-- 보관함 섹션 -->
+        <section class="w-full max-w-5xl border-t border-[#FFD700]/20 pt-16">
+            <h2 class="text-3xl font-serif text-[#FFD700] text-center mb-10 tracking-widest">MY ARCHIVE</h2>
+            <div id="archive-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 저장된 조합들이 여기에 표시됩니다 -->
+            </div>
+        </section>
+    </div>
 
-  <ambient-background></ambient-background>
-  <script type="module" src="/src/main.js"></script>
+    <!-- 알림 모달 -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[100] px-4">
+        <div class="bg-[#2D1B4E] border-2 border-[#FFD700] p-8 rounded-2xl max-w-md w-full text-center shadow-[0_0_50px_rgba(255,215,0,0.3)]">
+            <p id="modal-text" class="text-[#FFD700] text-lg mb-6 leading-relaxed"></p>
+            <button id="modal-close" class="px-8 py-2 bg-[#FFD700] text-[#2D1B4E] font-bold rounded-full hover:bg-white transition-colors">
+                확인
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
 </body>
 </html>

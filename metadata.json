@@ -1,5 +1,5 @@
 {
   "name": "Character Spark",
-  "description": "창작자를 위한 캐릭터 영감 엔진. 슬롯머신 스타일의 키워드 생성기, 비주얼 무드보드, 보관함 기능을 제공합니다.",
+  "description": "소설 및 웹툰 창작자를 위한 캐릭터 영감 생성 서비스",
   "requestFramePermissions": []
 }
