@@ -73,7 +73,7 @@ class CharacterCards extends HTMLElement {
 
     backElement.innerHTML = `
       <div class="redraw-overlay">
-        <div>이 카드만 다시 뽑기</div>
+        <div>REDRAW</div>
         <div class="redraw-count">(${count}/3)</div>
       </div>
       <div class="result-text">${this.sparkData[category]}</div>
@@ -126,7 +126,7 @@ class CharacterCards extends HTMLElement {
 
     this.isGeneratingAI = true;
     const aiBtn = this.shadowRoot.querySelector('.ai-btn');
-    aiBtn.textContent = "AI 분석 중...";
+    aiBtn.textContent = "AI ANALYZING...";
     aiBtn.disabled = true;
 
     try {
@@ -177,25 +177,23 @@ class CharacterCards extends HTMLElement {
         :host { 
           display: block; 
           width: 100%; 
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+          font-family: 'Inter', sans-serif;
         }
         .grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 2.5rem;
+          gap: 2rem;
           perspective: 2000px;
           width: 100%;
-          max-width: 1200px;
-          margin: 0 auto;
         }
         @media (max-width: 1000px) {
           .grid {
-            grid-template-columns: repeat(2, 2fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
           }
         }
         .card-scene {
-          aspect-ratio: 2/3.2;
+          aspect-ratio: 2/3;
           cursor: pointer;
         }
         .card {
@@ -204,11 +202,6 @@ class CharacterCards extends HTMLElement {
           transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
           transform-style: preserve-3d;
           position: relative;
-        }
-        
-        .card-scene:hover .card:not(.is-flipped) {
-          transform: translateY(-15px) rotateX(10deg);
-          box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
         }
         
         .card.is-flipped {
@@ -223,26 +216,24 @@ class CharacterCards extends HTMLElement {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          border-radius: 1.2rem;
-          border: 2px solid #FFD700;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           overflow: hidden;
           box-sizing: border-box;
-          transition: border-color 0.3s, box-shadow 0.3s;
+          transition: all 0.3s;
         }
         
-        .card-scene:hover .face.front {
-          border-color: #FFFFFF;
-          box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        .front {
+          background: #141414;
+          color: #FFFFFF;
+        }
+        .front:hover {
+          border-color: #00FF00;
+          box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
         }
 
-        .front {
-          background: linear-gradient(135deg, #25163F, #3B167C);
-          color: #FFD700;
-        }
         .back {
-          background: #FFFFFF;
-          color: #25163F;
+          background: #00FF00;
+          color: #000000;
           transform: rotateY(180deg);
           padding: 1.5rem;
           text-align: center;
@@ -252,8 +243,8 @@ class CharacterCards extends HTMLElement {
         .redraw-overlay {
           position: absolute;
           inset: 0;
-          background: rgba(37, 22, 63, 0.9);
-          color: #FFD700;
+          background: rgba(0, 0, 0, 0.9);
+          color: #00FF00;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -266,153 +257,135 @@ class CharacterCards extends HTMLElement {
           text-transform: uppercase;
           letter-spacing: 0.1em;
           gap: 0.5rem;
+          font-family: 'JetBrains Mono', monospace;
         }
         .redraw-count {
           font-size: 0.75rem;
           opacity: 0.8;
-          font-weight: 600;
         }
         .back:hover .redraw-overlay {
           opacity: 1;
         }
 
         .result-text {
-          font-weight: 800;
-          font-size: clamp(1.1rem, 2vw, 1.4rem);
-          line-height: 1.4;
+          font-weight: 900;
+          font-size: clamp(1.2rem, 3vw, 1.8rem);
+          line-height: 1.2;
           word-break: keep-all;
+          text-transform: uppercase;
         }
         .card-footer {
           position: absolute;
           bottom: 1.5rem;
-          font-size: 0.75rem;
-          letter-spacing: 0.2em;
+          font-size: 0.6rem;
+          letter-spacing: 0.3em;
           font-weight: 700;
           opacity: 0.5;
+          text-transform: uppercase;
+          font-family: 'JetBrains Mono', monospace;
         }
-        .icon { font-size: 3.5rem; margin-bottom: 1.5rem; }
-        .cat-label { font-weight: 800; letter-spacing: 0.3em; font-size: 0.8rem; }
+        .icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
+        .cat-label { font-weight: 800; letter-spacing: 0.3em; font-size: 0.7rem; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
         
-        /* Footer Button Layout */
         .footer-controls {
           display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
           gap: 1rem;
           margin-top: 4rem;
           width: 100%;
-          flex-wrap: wrap;
+          justify-content: flex-start;
         }
         
         .control-btn {
-          height: 3.5rem;
-          min-width: 160px;
-          flex: 1;
-          max-width: 240px;
-          border-radius: 3rem;
-          font-size: 0.9rem;
+          height: 4rem;
+          padding: 0 2rem;
+          border-radius: 0;
+          font-size: 0.8rem;
           font-weight: 800;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.2em;
           cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.6rem;
+          gap: 1rem;
           text-transform: uppercase;
+          font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Outline Style for Reset */
         .redraw-btn {
           background: transparent;
-          color: #FFD700;
-          border: 2px solid #FFD700;
+          color: #FFFFFF;
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .redraw-btn:hover {
-          background: rgba(255, 215, 0, 0.1);
-          box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-          transform: translateY(-2px);
+          border-color: #00FF00;
+          color: #00FF00;
         }
 
-        /* Solid Style for Save */
         .save-btn {
-          background: #FFD700;
-          color: #25163F;
+          background: #00FF00;
+          color: #000000;
           border: none;
-          box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
         }
         .save-btn:hover:not(:disabled) {
-          transform: translateY(-2px) scale(1.02);
-          box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+          background: #FFFFFF;
         }
         .save-btn:disabled {
-          background: rgba(255, 215, 0, 0.15);
-          color: rgba(255, 215, 0, 0.3);
-          box-shadow: none;
+          background: rgba(255, 255, 255, 0.05);
+          color: rgba(255, 255, 255, 0.1);
           cursor: not-allowed;
         }
 
-        /* AI Button Style */
         .ai-btn {
-          background: linear-gradient(135deg, #FFD700, #FFA500);
-          color: #25163F;
+          background: #FFFFFF;
+          color: #000000;
           border: none;
-          box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
         }
         .ai-btn:hover:not(:disabled) {
-          transform: translateY(-2px) scale(1.02);
-          box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+          background: #00FF00;
         }
         .ai-btn:disabled {
-          background: rgba(255, 215, 0, 0.15);
-          color: rgba(255, 215, 0, 0.3);
-          box-shadow: none;
+          background: rgba(255, 255, 255, 0.05);
+          color: rgba(255, 255, 255, 0.1);
           cursor: not-allowed;
         }
 
-        .btn-icon {
-          font-size: 1.2rem;
-        }
-
-        /* Modal Styles */
         #alert-modal {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.8);
+          background: rgba(0,0,0,0.9);
           display: none;
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          backdrop-filter: blur(5px);
         }
         #alert-modal.show { display: flex; }
         .modal-content {
-          background: #3B167C;
-          border: 2px solid #FFD700;
-          padding: 2.5rem;
-          border-radius: 2rem;
-          text-align: center;
-          max-width: 500px;
+          background: #141414;
+          border: 1px solid #00FF00;
+          padding: 4rem;
+          text-align: left;
+          max-width: 600px;
           width: 90%;
-          box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
         }
         .modal-message {
           color: #FFFFFF;
-          font-weight: 700;
-          margin-bottom: 2rem;
-          font-size: 1.1rem;
+          font-weight: 400;
+          margin-bottom: 3rem;
+          font-size: 1.2rem;
           line-height: 1.6;
           white-space: pre-wrap;
         }
         .modal-close {
-          background: #FFD700;
-          color: #25163F;
+          background: #00FF00;
+          color: #000000;
           border: none;
-          padding: 0.8rem 2rem;
-          border-radius: 1rem;
+          padding: 1rem 2rem;
           font-weight: 800;
           cursor: pointer;
+          font-family: 'JetBrains Mono', monospace;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
         }
       </style>
 
@@ -426,7 +399,7 @@ class CharacterCards extends HTMLElement {
               </div>
               <div class="face back" data-cat="${cat.id}">
                 <div class="redraw-overlay">
-                  <div>이 카드만 다시 뽑기</div>
+                  <div>REDRAW</div>
                   <div class="redraw-count">(0/3)</div>
                 </div>
                 <div class="result-text">?</div>
@@ -439,22 +412,22 @@ class CharacterCards extends HTMLElement {
       <div class="footer-controls">
         <button class="control-btn redraw-btn">
           <span class="btn-icon">↺</span>
-          <span>전체 다시 뽑기</span>
+          <span>Reset All</span>
         </button>
         <button class="control-btn ai-btn" disabled>
           <span class="btn-icon">✨</span>
-          <span>AI 배경 설정</span>
+          <span>AI Backstory</span>
         </button>
         <button class="control-btn save-btn" disabled>
           <span class="btn-icon">★</span>
-          <span>보관하기</span>
+          <span>Archive Spark</span>
         </button>
       </div>
 
       <div id="alert-modal">
         <div class="modal-content">
           <div class="modal-message" id="modal-message">하나 이상의 장르를 선택해 주세요.</div>
-          <button class="modal-close">확인</button>
+          <button class="modal-close">Close</button>
         </div>
       </div>
     `;

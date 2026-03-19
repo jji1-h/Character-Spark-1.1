@@ -3,37 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Character Spark</title>
+    <title>Character Spark | Creative Engine</title>
     <link rel="stylesheet" href="/src/index.css">
   </head>
   <body>
     <div id="app">
       <ambient-background></ambient-background>
+      
       <header>
-        <h1>Character Spark</h1>
-        <p>창작자를 위한 캐릭터 영감 엔진</p>
+        <h1>Character<br>Spark</h1>
+        <p>Creative Inspiration Engine / v1.0</p>
       </header>
 
       <main>
-        <section class="generator-area">
-          <div class="controls">
-            <genre-switcher></genre-switcher>
-          </div>
-          
-          <character-cards></character-cards>
-        </section>
+        <aside class="sidebar">
+          <div class="section-title">01 / Configuration</div>
+          <genre-switcher></genre-switcher>
+        </aside>
 
-        <section class="storage-area">
-          <h2>My Sparks (보관함)</h2>
-          <my-spark-shelf></my-spark-shelf>
-        </section>
+        <div class="content-area">
+          <div class="section-title">02 / Generation</div>
+          <character-cards></character-cards>
+        </div>
       </main>
 
+      <section class="storage-area">
+        <div class="section-title">03 / Archive</div>
+        <my-spark-shelf></my-spark-shelf>
+      </section>
+
       <footer>
-        <p>&copy; 2024 Character Spark. Create something amazing.</p>
+        <p>&copy; 2024 Character Spark. Built for the web.</p>
       </footer>
     </div>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>
-

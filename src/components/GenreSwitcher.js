@@ -27,104 +27,96 @@ class GenreSwitcher extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+          display: block;
+          font-family: "Inter", sans-serif;
         }
-        .switcher-container {
+        .container {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
-          align-items: center;
-          background: rgba(37, 22, 63, 0.4);
-          padding: 2rem;
-          border-radius: 2rem;
-          border: 1px solid rgba(255, 215, 0, 0.2);
-          backdrop-filter: blur(10px);
+          gap: 1rem;
         }
         .header {
           display: flex;
           justify-content: space-between;
-          width: 100%;
           align-items: center;
-          padding-bottom: 1rem;
-          border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+          margin-bottom: 1rem;
         }
         .label {
-          font-size: 1rem;
-          color: #FFD700;
-          font-weight: 800;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.7rem;
           text-transform: uppercase;
-          letter-spacing: 0.3em;
+          letter-spacing: 0.2em;
+          color: #00FF00;
+        }
+        .all-toggle {
+          cursor: pointer;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.6rem;
+          text-transform: uppercase;
+          color: #FFFFFF;
+          opacity: 0.5;
+          transition: opacity 0.2s;
+        }
+        .all-toggle:hover {
+          opacity: 1;
         }
         .options {
-          display: flex;
-          gap: 2rem;
-          flex-wrap: wrap;
-          justify-content: center;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.5rem;
         }
         .option {
           display: flex;
           align-items: center;
-          gap: 0.6rem;
+          gap: 1rem;
+          padding: 1rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           cursor: pointer;
-          font-weight: 600;
-          color: #FFFFFF;
           transition: all 0.2s;
           user-select: none;
         }
-        .all-toggle {
-          color: #FFD700;
-          font-weight: 800;
-          font-size: 0.8rem;
+        .option:hover {
+          background: rgba(0, 255, 0, 0.05);
+          border-color: #00FF00;
+        }
+        .option.active {
+          background: #00FF00;
+          color: #000000;
+          border-color: #00FF00;
+        }
+        .option input {
+          display: none;
+        }
+        .option-label {
+          font-size: 0.9rem;
+          font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-        }
-        input[type="checkbox"] {
-          appearance: none;
-          width: 1.2rem;
-          height: 1.2rem;
-          border: 2px solid rgba(255, 215, 0, 0.4);
-          border-radius: 0.4rem;
-          background: transparent;
-          cursor: pointer;
-          position: relative;
-          transition: all 0.2s;
-        }
-        input[type="checkbox"]:checked {
-          background: #FFD700;
-          border-color: #FFD700;
-        }
-        input[type="checkbox"]:checked::after {
-          content: '✓';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          color: #25163F;
-          font-size: 0.8rem;
-          font-weight: 900;
+          letter-spacing: 0.05em;
         }
       </style>
-      <div class="switcher-container">
+      <div class="container">
         <div class="header">
-          <div class="label">Magic Realm</div>
-          <label class="option all-toggle">
-            <input type="checkbox" id="all-select" ${allChecked ? 'checked' : ''}>
-            <span>전체 선택</span>
-          </label>
+          <div class="label">Genre Matrix</div>
+          <div class="all-toggle" id="all-select">
+            ${allChecked ? '[ Deselect All ]' : '[ Select All ]'}
+          </div>
         </div>
         <div class="options">
-          ${genres.map(([key, pack]) => `
-            <label class="option">
-              <input type="checkbox" class="genre-checkbox" value="${key}" ${dataService.selectedGenres.has(key) ? 'checked' : ''}>
-              <span>${pack.label}</span>
-            </label>
-          `).join('')}
+          ${genres.map(([key, pack]) => {
+            const isActive = dataService.selectedGenres.has(key);
+            return `
+              <label class="option ${isActive ? 'active' : ''}">
+                <input type="checkbox" class="genre-checkbox" value="${key}" ${isActive ? 'checked' : ''}>
+                <span class="option-label">${pack.label}</span>
+              </label>
+            `;
+          }).join('')}
         </div>
       </div>
     `;
 
-    this.shadowRoot.getElementById('all-select').addEventListener('change', (e) => {
-      this.toggleAll(e.target.checked);
+    this.shadowRoot.getElementById('all-select').addEventListener('click', () => {
+      this.toggleAll(!allChecked);
     });
 
     this.shadowRoot.querySelectorAll('.genre-checkbox').forEach(input => {

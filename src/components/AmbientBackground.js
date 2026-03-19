@@ -40,7 +40,7 @@ class AmbientBackground extends HTMLElement {
     }
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-    const material = new THREE.PointsMaterial({ color: 0xFFD700, size: 2, transparent: true, opacity: 0.5 });
+    const material = new THREE.PointsMaterial({ color: 0x00FF00, size: 2, transparent: true, opacity: 0.3 });
     this.particles = new THREE.Points(geometry, material);
     this.scene.add(this.particles);
 

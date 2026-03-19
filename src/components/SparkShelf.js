@@ -17,112 +17,170 @@ class SparkShelf extends HTMLElement {
   }
 
   render() {
-    const sparks = dataService.getSavedSparks();
-    
+    const sparks = dataService.getSparks();
+
     this.shadowRoot.innerHTML = `
       <style>
-        .shelf {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 2rem;
-          margin-top: 1rem;
+        :host {
+          display: block;
+          font-family: 'Inter', sans-serif;
         }
-        .card {
-          background: rgba(255, 255, 255, 0.95);
-          color: #25163F;
-          border-radius: 1rem;
-          padding: 1.5rem;
-          position: relative;
-          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .container {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-          border: 2px solid #FFD700;
+          gap: 2rem;
         }
-        .card:hover { transform: translateY(-8px) scale(1.02); }
-        .delete-btn {
-          position: absolute;
-          top: 0.5rem;
-          right: 0.5rem;
-          background: transparent;
-          border: none;
-          color: rgba(37, 22, 63, 0.3);
-          cursor: pointer;
-          font-size: 1.5rem;
-          transition: color 0.2s;
-        }
-        .delete-btn:hover { color: #ff4444; }
-        .card-header {
+        .header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 1px solid rgba(37, 22, 63, 0.1);
-          padding-bottom: 0.5rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding-bottom: 1rem;
         }
-        .genre-badges {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.3rem;
-        }
-        .genre-badge {
-          font-size: 0.6rem;
-          background: #3B167C;
-          padding: 0.2rem 0.5rem;
-          border-radius: 2rem;
+        .title {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.7rem;
           text-transform: uppercase;
-          color: #FFD700;
-          font-weight: 800;
+          letter-spacing: 0.2em;
+          color: #00FF00;
         }
-        .keywords {
+        .count {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.6rem;
+          opacity: 0.5;
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 1.5rem;
+        }
+        .spark-card {
+          background: #141414;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 1.5rem;
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
-          font-family: 'Georgia', serif;
+          gap: 1rem;
+          position: relative;
+          transition: all 0.2s;
         }
-        .kw {
-          font-weight: 900;
-          font-size: 1.1rem;
+        .spark-card:hover {
+          border-color: #00FF00;
+          transform: translateY(-4px);
         }
-        .kw span {
-          font-size: 0.65rem;
-          color: rgba(37, 22, 63, 0.5);
-          margin-right: 0.8rem;
+        .spark-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+        }
+        .spark-id {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.6rem;
+          opacity: 0.3;
+        }
+        .delete-btn {
+          cursor: pointer;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.6rem;
+          color: #FF0000;
+          opacity: 0.5;
+          transition: opacity 0.2s;
+          background: none;
+          border: none;
+          padding: 0;
+        }
+        .delete-btn:hover {
+          opacity: 1;
+        }
+        .spark-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+        .data-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+        .data-label {
+          font-size: 0.6rem;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          display: inline-block;
-          width: 50px;
+          opacity: 0.4;
+          font-weight: 700;
         }
-        .empty {
-          grid-column: 1 / -1;
-          text-align: center;
-          padding: 5rem;
-          color: rgba(255, 255, 255, 0.5);
-          border: 2px dashed rgba(255, 215, 0, 0.3);
-          border-radius: 2rem;
+        .data-value {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #FFFFFF;
+        }
+        .spark-footer {
+          margin-top: 1rem;
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .genre-tag {
+          font-size: 0.5rem;
+          padding: 0.2rem 0.5rem;
+          background: rgba(255, 255, 255, 0.05);
+          color: #FFFFFF;
           text-transform: uppercase;
-          letter-spacing: 0.3em;
+          letter-spacing: 0.1em;
+          font-family: 'JetBrains Mono', monospace;
+        }
+        .empty-state {
+          padding: 4rem;
+          text-align: center;
+          border: 1px dashed rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.2);
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
         }
       </style>
-      <div class="shelf">
-        ${sparks.length === 0 ? '<div class="empty">The archives are empty. Find your spark.</div>' : 
-          sparks.map(spark => `
-            <div class="card">
-              <button class="delete-btn" data-id="${spark.id}">×</button>
-              <div class="card-header">
-                <div class="genre-badges">
-                  ${(spark.genres || []).map(g => `<span class="genre-badge">${g}</span>`).join('')}
+      <div class="container">
+        <div class="header">
+          <div class="title">Archive Repository</div>
+          <div class="count">${sparks.length} ITEMS STORED</div>
+        </div>
+        
+        ${sparks.length === 0 ? `
+          <div class="empty-state">No data records found in local storage.</div>
+        ` : `
+          <div class="grid">
+            ${sparks.map(s => `
+              <div class="spark-card">
+                <div class="spark-header">
+                  <div class="spark-id">ID: ${s.id}</div>
+                  <button class="delete-btn" data-id="${s.id}">[ DELETE ]</button>
+                </div>
+                <div class="spark-content">
+                  <div class="data-item">
+                    <span class="data-label">Job</span>
+                    <span class="data-value">${s.job}</span>
+                  </div>
+                  <div class="data-item">
+                    <span class="data-label">Personality</span>
+                    <span class="data-value">${s.personality}</span>
+                  </div>
+                  <div class="data-item">
+                    <span class="data-label">Appearance</span>
+                    <span class="data-value">${s.appearance}</span>
+                  </div>
+                  <div class="data-item">
+                    <span class="data-label">Twist</span>
+                    <span class="data-value">${s.twist}</span>
+                  </div>
+                </div>
+                <div class="spark-footer">
+                  ${s.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
                 </div>
               </div>
-              <div class="keywords">
-                <div class="kw"><span>성격</span>${spark.personality}</div>
-                <div class="kw"><span>직업</span>${spark.job}</div>
-                <div class="kw"><span>외모특성</span>${spark.appearance}</div>
-                <div class="kw"><span>반전매력</span>${spark.twist}</div>
-              </div>
-            </div>
-          `).join('')
-        }
+            `).join('')}
+          </div>
+        `}
       </div>
     `;
 
@@ -134,4 +192,4 @@ class SparkShelf extends HTMLElement {
   }
 }
 
-customElements.define('my-spark-shelf', SparkShelf);
+customElements.define('spark-shelf', SparkShelf);

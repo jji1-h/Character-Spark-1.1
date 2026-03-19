@@ -103,7 +103,7 @@ class CharacterDataService {
     localStorage.setItem('mySparks', JSON.stringify(this.savedSparks));
   }
 
-  getSavedSparks() {
+  getSparks() {
     return this.savedSparks;
   }
 }
